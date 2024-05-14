@@ -7,9 +7,13 @@ export default function Home() {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Ordenes</h1>
 
-        <div className="flex items-center gap-4">
-          <button>Exportar excel</button>
-          <button>Realizar orden</button>
+        <div className="flex items-center gap-x-2">
+          <button className="border border-gray-300/80 px-2 py-2.5 rounded-md hover:bg-slate-200/55">
+            Exportar excel
+          </button>
+          <button className="bg-[#214a75] text-white px-2 py-2.5 rounded-md hover:bg-[#18416e]">
+            Realizar orden
+          </button>
         </div>
       </div>
 
