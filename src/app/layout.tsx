@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 import { inter } from '@/lib/fonts'
-import { Sidebar } from '@/features/core'
+import { Sidebar, ToastifyProvider } from '@/features/core'
 
 export const metadata: Metadata = {
   title: 'intelli-stock',
@@ -23,6 +24,8 @@ export default function RootLayout({
             {children}
           </main>
         </div>
+
+        <ToastifyProvider />
       </body>
     </html>
   )
