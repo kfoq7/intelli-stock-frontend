@@ -9,15 +9,15 @@ import { Profile } from './profile'
 const links = [
   {
     page: 'Home',
-    to: '/'
+    to: '/dashboard'
   },
   {
     page: 'Inventory',
-    to: '/inventory'
+    to: '/dashboard/inventory'
   },
   {
     page: 'Chatbot',
-    to: '/chatbot'
+    to: '/dashboard/chatbot'
   }
 ]
 
@@ -29,26 +29,22 @@ export function Sidebar() {
       <Logo />
 
       <Profile />
-
-      <div className="grow flex flex-col justify-between p-2">
-        <nav className="text-white flex flex-col gap-y-1">
-          {links.map(({ page, to }) => (
-            <Link
-              key={page}
-              href={to}
-              className={cn('py-2 px-3 rounded-md hover:bg-[#18416e]', {
-                'bg-[#214a75] hover:bg-[#214a75]': pathname === to
-              })}
-            >
-              {page}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="text-white">
-          <button className="">Cerrar sesion</button>
-        </div>
-      </div>
+      {/* 
+      <div className="grow flex flex-col p-2"> */}
+      <nav className="text-white flex flex-col gap-y-1 grow p-2">
+        {links.map(({ page, to }) => (
+          <Link
+            key={page}
+            href={to}
+            className={cn('py-2 px-3 rounded-md hover:bg-[#18416e]', {
+              'bg-[#214a75] hover:bg-[#214a75]': pathname === to
+            })}
+          >
+            {page}
+          </Link>
+        ))}
+      </nav>
+      {/* </div> */}
     </aside>
   )
 }

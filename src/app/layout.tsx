@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { inter } from '@/lib/fonts'
-import { Sidebar, ToastifyProvider } from '@/features/core'
+import { AppProviders } from '@/features/core'
 
 export const metadata: Metadata = {
   title: 'intelli-stock',
@@ -17,15 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen flex">
-          <Sidebar />
-
-          <main className="p-5 flex flex-col min-h-screen grow">
-            {children}
-          </main>
-        </div>
-
-        <ToastifyProvider />
+        <AppProviders>
+          <div className="min-h-screen flex">{children}</div>
+        </AppProviders>
       </body>
     </html>
   )

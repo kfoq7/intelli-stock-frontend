@@ -113,5 +113,19 @@ export const inventoryList = [
       contact: 'Bob Johnson'
     }
   }
-  // Additional entries can be added here...
+]
+
+export const proveedores = [
+  {
+    id: 203,
+    name: 'Memory World',
+    location: '789 Elm St, City, Country',
+    contact: 'Bob Johnson'
+  },
+  {
+    id: 201,
+    name: 'TechMart',
+    location: '123 Main St, City, Country',
+    contact: 'John Doe'
+  }
 ]

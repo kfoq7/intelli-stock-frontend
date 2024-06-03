@@ -27,15 +27,27 @@ export function Profile() {
       >
         <div className="relative">
           <MenuItems className="absolute bg-[#333333] w-[80%] top-1 rounded-md border border-black/10 shadow-md py-2.5 px-2">
-            <div className="flex flex-col gap-y-2">
-              <MenuItem>
-                <Link
-                  href="/admin"
-                  className="py-1 px-3 rounded-md hover:bg-[#0570eb] tracking-normal"
-                >
-                  Gestion cuentas...
-                </Link>
-              </MenuItem>
+            <div className="flex flex-col divide-y-2 divide-gray-100/20">
+              <div className="py-2">
+                <MenuItem>
+                  <Link
+                    href="/admin"
+                    className="block py-1 px-3 rounded-md hover:bg-[#0570eb] tracking-normal"
+                  >
+                    Gestion cuentas...
+                  </Link>
+                </MenuItem>
+              </div>
+              <div className="py-2">
+                <MenuItem>
+                  <Link
+                    href="/admin"
+                    className="block py-1 px-3 rounded-md hover:bg-[#0570eb] tracking-normal"
+                  >
+                    Cerrar sesion
+                  </Link>
+                </MenuItem>
+              </div>
             </div>
           </MenuItems>
         </div>
