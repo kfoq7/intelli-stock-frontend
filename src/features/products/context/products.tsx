@@ -1,6 +1,13 @@
-import React, { createContext } from 'react'
+'use client'
 
-interface ProductContext {}
+import React, { createContext, useState } from 'react'
+import { Product } from '../types'
+// import { useProductList } from '../hooks/use-product-list'
+import { pcComponentList } from '@/features/orders/lib/data'
+
+interface ProductContext {
+  products: Product[]
+}
 
 interface Props {
   children: React.ReactNode
@@ -9,7 +16,19 @@ interface Props {
 export const ProductContext = createContext<ProductContext | null>(null)
 
 export function ProductProvider({ children }: Props) {
+  const [products, setProducts] = useState(pcComponentList)
+
+  // const
+
+  // useEffect(() => {
+  //   if (data) {
+  //     setProductos(data)
+  //   }
+  // }, [data])
+
   return (
-    <ProductContext.Provider value={{}}>{children}</ProductContext.Provider>
+    <ProductContext.Provider value={{ products }}>
+      {children}
+    </ProductContext.Provider>
   )
 }

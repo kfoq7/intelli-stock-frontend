@@ -41,7 +41,7 @@ export function Profile() {
               <div className="py-2">
                 <MenuItem>
                   <Link
-                    href="/admin"
+                    href="/login"
                     className="block py-1 px-3 rounded-md hover:bg-[#0570eb] tracking-normal"
                   >
                     Cerrar sesion

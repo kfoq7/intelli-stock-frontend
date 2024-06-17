@@ -1,12 +1,12 @@
-// export interface Product {
-//   id: number
-//   name: string
-//   description: string
-//   code: string
-//   amount: number
-//   seller: string
-//   unitPrice: number
-// }
+export interface Product {
+  id: number
+  name: string
+  description: string
+  code: string
+  amount: number
+  seller: string
+  unitPrice: number
+}
 
 export interface Producto {
   productoId: string

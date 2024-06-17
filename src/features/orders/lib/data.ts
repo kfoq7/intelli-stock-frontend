@@ -112,6 +112,99 @@ export const inventoryList = [
       location: '789 Elm St, City, Country',
       contact: 'Bob Johnson'
     }
+  },
+  {
+    id: 103,
+    products: [
+      {
+        id: 5,
+        name: 'Motherboard',
+        description: 'High-performance motherboard for gaming',
+        code: 'MB-GAM123',
+        amount: 5,
+        seller: 'Gamerz Gear',
+        unitPrice: 299.99
+      },
+      {
+        id: 6,
+        name: 'Power Supply',
+        description: '750W Modular Power Supply Unit',
+        code: 'PSU-750W456',
+        amount: 12,
+        seller: 'Energy Efficient Supplies',
+        unitPrice: 109.99
+      }
+    ],
+    date: '2024-05-30',
+    description: 'Received a shipment of motherboards and power supplies',
+    provider: {
+      id: 203,
+      name: 'Gamerz Gear',
+      location: '789 Gamer St, Game City, Country',
+      contact: 'Mike Johnson'
+    }
+  },
+  {
+    id: 104,
+    products: [
+      {
+        id: 7,
+        name: 'Cooling Fan',
+        description: '120mm RGB Cooling Fan',
+        code: 'FAN-RGB123',
+        amount: 50,
+        seller: 'Cooling Solutions',
+        unitPrice: 29.99
+      },
+      {
+        id: 8,
+        name: 'Case',
+        description: 'ATX Mid Tower Gaming Case',
+        code: 'CASE-ATX456',
+        amount: 10,
+        seller: 'Case World',
+        unitPrice: 99.99
+      }
+    ],
+    date: '2024-05-31',
+    description: 'Received a shipment of cooling fans and cases',
+    provider: {
+      id: 204,
+      name: 'Cooling Solutions',
+      location: '321 Cool Ave, Chill City, Country',
+      contact: 'Alice Brown'
+    }
+  },
+  {
+    id: 105,
+    products: [
+      {
+        id: 9,
+        name: 'Monitor',
+        description: '27-inch 4K UHD Monitor',
+        code: 'MON-4K123',
+        amount: 7,
+        seller: 'Display Tech',
+        unitPrice: 399.99
+      },
+      {
+        id: 10,
+        name: 'Keyboard',
+        description: 'Mechanical Gaming Keyboard',
+        code: 'KB-MECH456',
+        amount: 20,
+        seller: 'Keyboard Kings',
+        unitPrice: 79.99
+      }
+    ],
+    date: '2024-06-01',
+    description: 'Received a shipment of monitors and keyboards',
+    provider: {
+      id: 205,
+      name: 'Display Tech',
+      location: '987 Display Blvd, Screen City, Country',
+      contact: 'Chris Green'
+    }
   }
 ]
 
@@ -127,5 +220,17 @@ export const proveedores = [
     name: 'TechMart',
     location: '123 Main St, City, Country',
     contact: 'John Doe'
+  },
+  {
+    id: 205,
+    name: 'Display Tech',
+    location: '987 Display Blvd, Screen City, Country',
+    contact: 'Chris Green'
+  },
+  {
+    id: 204,
+    name: 'Cooling Solutions',
+    location: '321 Cool Ave, Chill City, Country',
+    contact: 'Alice Brown'
   }
 ]

@@ -7,8 +7,16 @@ import { toast } from 'react-toastify'
 import { ChartBarIcon, WalletIcon } from '@heroicons/react/20/solid'
 import { Container } from '@/features/core'
 import { RegisterOrderModal } from '@/features/orders'
-import { inventoryList, pcComponentList } from '@/features/orders/lib/data'
-import { ProductCard } from '@/features/products'
+import { ProductCard, useProducts } from '@/features/products'
+import { useCutomsers } from '@/features/customers'
+import {
+  inventoryList,
+  pcComponentList,
+  proveedores
+} from '@/features/orders/lib/data'
+import { useSuppliersList } from '@/features/suppliers'
+import { useOrders } from '@/features/orders/hook/use-orders'
+import { getRandomNumber } from '@/lib/utils'
 
 export default function Home() {
   const [producto, setProduct] = useState({
@@ -17,12 +25,25 @@ export default function Home() {
     amount: 10
   })
   const [isOpen, setIsOpen] = useState(false)
+  const [numberOfProducts, setNumberOfProducts] = useState(26)
+  const { totalCustomers } = useCutomsers()
+  const { orders } = useOrders()
+  // const { productos } = useProducts()
+  const { data } = useSuppliersList()
 
   useEffect(() => {
     setTimeout(() => {
       setProduct(prev => ({ ...prev, amount: 4 }))
     }, 10000)
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNumberOfProducts(
+        prev => (prev += getRandomNumber({ min: 10, max: 20 }))
+      )
+    }, 2000)
+  }, [, numberOfProducts])
 
   useEffect(() => {
     if (producto.amount <= 4) {
@@ -32,26 +53,6 @@ export default function Home() {
 
   return (
     <>
-      {/* <div className="p-4">
-        <div className="space-x-2">
-          <button
-            onClick={() => toast('Wow so easy!')}
-            className="bg-[#214a75] text-white px-2 py-2.5 rounded-md hover:bg-[#18416e]"
-          >
-            Click here
-          </button>
-
-          <button
-            className="bg-[#214a75] text-white px-2 py-2.5 rounded-md hover:bg-[#18416e]"
-            onClick={() => setIsOpen(true)}
-          >
-            Nuevo pedido
-          </button>
-
-          <RegisterOrderModal open={isOpen} onClose={() => setIsOpen(false)} />
-        </div>
-      </div> */}
-
       <RegisterOrderModal open={isOpen} onClose={() => setIsOpen(false)} />
 
       <div className="grid grid-cols-[1fr_380px] h-full gap-4">
@@ -66,14 +67,16 @@ export default function Home() {
                   <h3 className="text-gray-400 font-semibold">Clientes</h3>
 
                   <span className="text-6xl font-semibold tracking-tighter">
-                    1234
+                    {totalCustomers}
                   </span>
                 </div>
               </div>
               <div className="bg-transparent p-4 rounded-md w-full flex items-center gap-4">
                 <ChartBarIcon className="size-6" />
                 <div>
-                  <h3 className="text-gray-400 font-semibold">Customers</h3>
+                  <h3 className="text-gray-400 font-semibold">
+                    Ventas Totales
+                  </h3>
 
                   <span className="text-6xl font-semibold tracking-tighter">
                     1234
@@ -100,11 +103,21 @@ export default function Home() {
 
             <section className="mx-auto max-w-7xl">
               <div className="h-40 flex items-center justify-center gap-4">
-                <div>Proveedor 1</div>
-                <div>Proveedor 2</div>
-                <div>Proveedor 3</div>
-                <div>Proveedor 4</div>
-                <div>Ver todos</div>
+                {proveedores.slice(0, 3).map(({ id, name }) => (
+                  <div
+                    key={id}
+                    className="rounded-full text-center size-28 flex items-center justify-center bg-blue-400/55"
+                  >
+                    {name}
+                  </div>
+                ))}
+
+                <Link
+                  href="/dashboard/suppliers"
+                  className="bg-[#18416e] text-white p-2 rounded-md"
+                >
+                  Ver todos
+                </Link>
               </div>
             </section>
           </div>
@@ -154,10 +167,12 @@ export default function Home() {
               xAxis={[
                 {
                   scaleType: 'band',
-                  data: ['22', '23', '24', '25', '26', '27', '30']
+                  data: ['29', '30', '31', '0', '1', '2', '3']
                 }
               ]}
-              series={[{ data: [323, 500, 1000, 400, 2100] }]}
+              series={[
+                { data: [323, 500, 1000, 400, 2100, 240, numberOfProducts] }
+              ]}
               colors={['#AFF082', '#F0AC82']}
             />
           </div>
@@ -172,8 +187,23 @@ export default function Home() {
             <div className="space-y-2">
               <div>Provedores</div>
               <section className="space-y-2 h-full">
-                {pcComponentList.map(product => (
-                  <ProductCard key={product.id} product={product} />
+                {orders.slice(0, 5).map(proveedor => (
+                  <div
+                    key={proveedor.id}
+                    className="max-w-sm rounded overflow-hidden shadow-lg m-4"
+                  >
+                    <div className="px-6 py-4">
+                      <div className="font-bold text-xl mb-2">
+                        {proveedor.provider.name}
+                      </div>
+                      <p className="text-gray-700 text-base">
+                        <strong>Fecha:</strong> {proveedor.date}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Contacto:</strong> {proveedor.provider.contact}
+                      </p>
+                    </div>
+                  </div>
                 ))}
               </section>
             </div>
@@ -182,26 +212,6 @@ export default function Home() {
           </div>
         </Container>
       </div>
-
-      {/* <div className="p-4">
-        <div className="space-x-2">
-          <button
-            onClick={() => toast('Wow so easy!')}
-            className="bg-[#214a75] text-white px-2 py-2.5 rounded-md hover:bg-[#18416e]"
-          >
-            Click here
-          </button>
-
-          <button
-            className="bg-[#214a75] text-white px-2 py-2.5 rounded-md hover:bg-[#18416e]"
-            onClick={() => setIsOpen(true)}
-          >
-            Nuevo pedido
-          </button>
-
-          <RegisterOrderModal open={isOpen} onClose={() => setIsOpen(false)} />
-        </div>
-      </div> */}
     </>
   )
 }

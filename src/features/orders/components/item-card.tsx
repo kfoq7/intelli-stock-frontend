@@ -6,6 +6,7 @@ import {
   DisclosurePanel
 } from '@headlessui/react'
 import { ChevronDownIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
+import { pcComponentList } from '../lib/data'
 
 const productList = [
   {
@@ -34,7 +35,7 @@ const productList = [
   }
 ]
 
-export function ItemCard() {
+export function ItemCard({ id, products, asdfdate, provider }) {
   return (
     <Disclosure
       as="div"
@@ -44,9 +45,9 @@ export function ItemCard() {
         <DisclosureButton className="flex items-center justify-between gap-x-2 outline-none w-full">
           <div className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
             <div className="flex gap-x-8 text-[#204860]">
-              <div className="text-blue-500">ar935</div>
-              <div className="">20/04/2024</div>
-              <div className="">Cisneros Pacheco Dora Susans</div>
+              <div className="text-blue-500">{id}</div>
+              <div className="">{asdfdate}</div>
+              <div className="">{provider}</div>
               <div>Amazon</div>
               <div>4</div>
               <div className="">Estado</div>
@@ -59,16 +60,18 @@ export function ItemCard() {
         </DisclosureButton>
       </div>
 
-      <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
-        <ul className="pt-4 flex flex-col gap-y-2">
-          {productList.map(({ description, code, name }) => (
-            <li key={code} className="flex items-center gap-x-8">
-              <div className="text-black font-semibold">{name}</div>
-              <div>{description}</div>
-            </li>
-          ))}
-        </ul>
-      </DisclosurePanel>
+      <div>
+        <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
+          <ul className="pt-4 flex flex-col gap-y-2">
+            {products.map(({ description, code, name }) => (
+              <li key={code} className="flex items-center gap-x-8">
+                <div className="text-black font-semibold">{name}</div>
+                <div>{description}</div>
+              </li>
+            ))}
+          </ul>
+        </DisclosurePanel>
+      </div>
     </Disclosure>
   )
 }
