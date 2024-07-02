@@ -17,6 +17,7 @@ import {
 import { useSuppliersList } from '@/features/suppliers'
 import { useOrders } from '@/features/orders/hook/use-orders'
 import { getRandomNumber } from '@/lib/utils'
+import { useSession } from 'next-auth/react'
 
 export default function Home() {
   const [producto, setProduct] = useState({
@@ -29,6 +30,8 @@ export default function Home() {
   const { totalCustomers } = useCutomsers()
   const { orders } = useOrders()
   // const { productos } = useProducts()
+  const { data: session } = useSession()
+  console.log(session)
   const { data } = useSuppliersList()
 
   useEffect(() => {
@@ -45,11 +48,11 @@ export default function Home() {
     }, 2000)
   }, [, numberOfProducts])
 
-  useEffect(() => {
-    if (producto.amount <= 4) {
-      toast.warn(`Cantidad ${producto.name} baja.`)
-    }
-  }, [producto])
+  // useEffect(() => {
+  //   if (producto.amount <= 4) {
+  //     toast.warn(`Cantidad ${producto.name} baja.`)
+  //   }
+  // }, [producto])
 
   return (
     <>

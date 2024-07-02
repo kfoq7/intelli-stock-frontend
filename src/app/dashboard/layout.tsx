@@ -9,7 +9,7 @@ export default function DashboardLayout({
     <>
       <Sidebar />
 
-      <main className="p-5 flex flex-col h-screen grow overflow-y-scroll">
+      <main className="flex w-full justify-center gap-x-4 px-6 py-3">
         {children}
       </main>
     </>

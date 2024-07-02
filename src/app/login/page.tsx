@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
 
 export default function Login() {
-  const [auth, setAuth] = useState({ username: '', password: '' })
+  const [auth, setAuth] = useState({ email: '', password: '' })
 
   const router = useRouter()
 
@@ -15,15 +16,18 @@ export default function Login() {
     setAuth(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleOnLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (auth.username !== 'admin' || auth.password !== 'admin') {
-      toast.error('Usuario o contraseña incorrectos')
-      return
-    }
+    const result = await signIn('credentials', {
+      redirect: false,
+      email: auth.email,
+      password: auth.password
+    })
 
-    if (Object.values(auth).every(value => value === 'admin')) {
+    if (result?.error) {
+      toast.error('Usuario o contraseña incorrectos')
+    } else if (result?.ok) {
       router.push('/dashboard')
     }
   }
@@ -37,7 +41,7 @@ export default function Login() {
           <div className="flex flex-col gap-2">
             <label>Usuario</label>
             <input
-              name="username"
+              name="email"
               type="text"
               onChange={handlOnChange}
               className="outline-none p-2 border-2 border-gray-400 rounded-md"

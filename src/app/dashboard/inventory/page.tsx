@@ -1,12 +1,13 @@
 'use client'
 
 import { Container } from '@/features/core'
+import { useInventoryList } from '@/features/inventory'
 import { ItemCard, OrderList } from '@/features/orders'
 import { useOrders } from '@/features/orders/hook/use-orders'
 import { inventoryList } from '@/features/orders/lib/data'
 
 export default function Inventory() {
-  const { orders } = useOrders()
+  const { data, isLoading } = useInventoryList()
 
   return (
     <Container>
@@ -29,18 +30,39 @@ export default function Inventory() {
           placeholder="Buscar por ID inventario"
           className="outline-none p-2 rounded-md border w-80"
         />
+        <div className="flex gap-x-8 text-lg font-bold text-[#204860] mb-4 border-b py-2">
+          <div className="text-blue-500">ID</div>
+          <div>Fecha</div>
+          <div>Proveedor</div>
+          <div>Vendedor</div>
+          <div>Cantidad</div>
+          <div>Estado</div>
+        </div>
 
-        <div className="h-full">
+        <div className="h-[600px] overflow-y-auto">
           <OrderList>
-            {orders.map(({ id, provider, date, products }) => (
-              <ItemCard
-                key={id}
-                id={id}
-                asdfdate={date}
-                provider={provider.name}
-                products={products}
-              />
-            ))}
+            {isLoading ? (
+              <></>
+            ) : (
+              data?.map(
+                ({
+                  inventarioId,
+                  cantidadProducto,
+                  proveedorId,
+                  fechaEntrada,
+                  productos
+                }) => (
+                  <ItemCard
+                    key={inventarioId}
+                    id={inventarioId}
+                    date={fechaEntrada}
+                    provider={proveedorId}
+                    products={productos}
+                    cantidadProducto={cantidadProducto}
+                  />
+                )
+              )
+            )}
           </OrderList>
         </div>
       </div>

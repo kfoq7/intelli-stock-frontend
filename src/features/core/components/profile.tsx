@@ -7,8 +7,12 @@ import {
   Transition
 } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
+import { AccountModalContext } from '@/features/auth'
+import { useContext } from 'react'
 
 export function Profile() {
+  const { onClose } = useContext(AccountModalContext)
+
   return (
     <Menu as="div" className="text-white p-2">
       <MenuButton className="text-left py-2 px-3 rounded-md hover:bg-[#18416e] w-full">
@@ -30,12 +34,12 @@ export function Profile() {
             <div className="flex flex-col divide-y-2 divide-gray-100/20">
               <div className="py-2">
                 <MenuItem>
-                  <Link
-                    href="/admin"
-                    className="block py-1 px-3 rounded-md hover:bg-[#0570eb] tracking-normal"
+                  <button
+                    onClick={onClose}
+                    className="w-full rounded-md px-3 py-1 text-left tracking-normal hover:bg-[#0570eb]"
                   >
                     Gestion cuentas...
-                  </Link>
+                  </button>
                 </MenuItem>
               </div>
               <div className="py-2">

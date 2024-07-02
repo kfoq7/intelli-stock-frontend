@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import { getProducts } from '../services/product.service'
 
 export function useProductList() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['products'],
     queryFn: getProducts
   })
 
-  return { data }
+  return { data, isLoading }
 }

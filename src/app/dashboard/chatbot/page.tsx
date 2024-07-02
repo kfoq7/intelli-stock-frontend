@@ -1,50 +1,63 @@
 'use client'
 
-import { Container } from '@/features/core'
 import { useState } from 'react'
+import { Container } from '@/features/core'
+
+interface Message {
+  id: number
+  text: string
+  sender: string
+}
 
 export default function Chatbot() {
-  const [messages, setMessages] = useState([
-    { id: 1, text: 'Hola', sender: 'user' },
-    { id: 2, text: 'Hola, ¿cómo puedo ayudarte hoy?', sender: 'bot' }
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (newMessage.trim()) {
-      setMessages([
-        ...messages,
-        { id: messages.length + 1, text: newMessage, sender: 'user' }
-      ])
-      setNewMessage('')
-    }
-
-    setTimeout(() => {
-      const botMessage = {
-        id: messages.length + 2,
-        text: `
-        El análisis de mercado es fundamental para cualquier empresa que quiera tener éxito en un entorno competitivo. Este proceso incluye la recolección y el estudio de datos sobre el mercado, los consumidores y los competidores para entender las dinámicas y tendencias actuales y anticipar cambios futuros.
-        
-        1. **Identificación del mercado objetivo**: Es esencial conocer quiénes son tus consumidores potenciales. Esto incluye segmentar el mercado en grupos basados en características como la demografía, la ubicación geográfica y los comportamientos de compra.
-        
-        2. **Estudio de la competencia**: Analizar a tus competidores te ayuda a entender sus fortalezas y debilidades. Esto te permite encontrar oportunidades para diferenciarte y ofrecer algo único a tus clientes.
-        
-        3. **Análisis de la demanda y tendencias del mercado**: Conocer la demanda actual y predecir tendencias futuras es crucial. Esto puede incluir estudiar los patrones de compra de los consumidores y las innovaciones tecnológicas que puedan afectar al mercado.
-        
-        4. **Evaluación del entorno económico y regulador**: Las condiciones económicas y las regulaciones gubernamentales pueden influir significativamente en el mercado. Evaluar factores como la inflación, el desempleo y las políticas fiscales te ayudará a prepararte para posibles desafíos y aprovechar oportunidades.
-        
-        5. **Análisis FODA**: Realizar un análisis de Fortalezas, Oportunidades, Debilidades y Amenazas proporciona una visión completa de tu posición en el mercado y te ayuda a desarrollar estrategias efectivas.
-        
-        Realizar un análisis de mercado detallado te permite tomar decisiones informadas, adaptarte a los cambios del mercado y satisfacer mejor las necesidades de tus clientes. ¿Te gustaría saber más sobre algún aspecto específico del análisis de mercado?
-        `,
-        sender: 'bot'
+      const userMessage = {
+        id: messages.length + 1,
+        text: newMessage,
+        sender: 'user'
       }
-      setMessages(prevMessages => [...prevMessages, botMessage])
-    }, 1000) // 1 second delay
+
+      setMessages([...messages, userMessage])
+      setNewMessage('')
+
+      try {
+        // Send the user message to the backend API
+        const response = await fetch(
+          'http://localhost:8000/api/chat-completion',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: newMessage,
+              userId: 'kasjdfk' // Replace with actual user ID
+            })
+          }
+        )
+
+        const result = await response.json()
+        if (result.ok && result.data && result.data.content) {
+          const botMessage = {
+            id: result.data.id, // Use the id from the response
+            text: result.data.content,
+            sender: 'bot'
+          }
+
+          setMessages(prevMessages => [...prevMessages, botMessage])
+        }
+      } catch (error) {
+        console.error('Error sending message:', error)
+      }
+    }
   }
 
   return (
-    <Container className="flex flex-col h-screen bg-gray-100">
+    <Container className="flex flex-col bg-gray-100">
       <div className="flex-none bg-[#214a75] text-white p-4 rounded-md">
         <h1 className="text-xl">Chat Application</h1>
       </div>

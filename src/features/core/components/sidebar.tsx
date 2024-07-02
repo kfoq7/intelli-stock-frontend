@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { IventoryMenu } from '@/features/inventory'
 import { Logo } from './logo'
 import { Profile } from './profile'
 
@@ -25,7 +26,7 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="bg-gradient-to-t from-[#203040] from-70% to-[#283a4d] w-[290px] lg:w-[310px] h-screen flex flex-col overflow-x-hidden">
+    <aside className="bg-gradient-to-t from-[#203040] from-70% to-[#283a4d] h-screen overflow-x-hidden">
       <Logo />
 
       <Profile />
@@ -45,6 +46,8 @@ export function Sidebar() {
         ))}
       </nav>
       {/* </div> */}
+
+      <IventoryMenu />
     </aside>
   )
 }

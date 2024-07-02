@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Select from 'react-select'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import { Product, useProducts } from '@/features/products'
+import { OptionSelect, Select } from '@/features/core'
+import { Producto, useProducts } from '@/features/products'
 import { proveedores } from '../lib/data'
-import { InventoryItem } from '../types'
+import { InventoryItem, Proveedor } from '../types'
 import { useOrders } from '../hook/use-orders'
 
 interface Props {
@@ -27,8 +27,8 @@ export function RegisterOrderModal({ open, onClose }: Props) {
       contact: ''
     }
   })
-  const [selectedProveedor, setSelectedProveedor] = useState([])
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>([])
+  const [selectedProveedor, setSelectedProveedor] = useState<Proveedor>()
+  const [selectedProducts, setSelectedProducts] = useState<Producto[]>([])
   const { addOrder } = useOrders()
 
   const handleInputChange = (
@@ -38,14 +38,14 @@ export function RegisterOrderModal({ open, onClose }: Props) {
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleProviderSelect = (selectedOption: any) => {
-    setSelectedProveedor(selectedOption)
+  const handleProviderSelect = (selectedOption: OptionSelect<Proveedor>) => {
+    setSelectedProveedor(selectedOption.value)
     setFormData({ ...formData, provider: selectedOption.value })
   }
 
-  const handleProductSelect = (selectedOptions: any) => {
+  const handleProductSelect = (selectedOptions: OptionSelect<Producto>[]) => {
     console.log({ selectedOptions })
-    setSelectedProducts(selectedOptions)
+    setSelectedProducts(selectedOptions.map(({ value }) => ({ ...value })))
     setFormData({
       ...formData,
       products: selectedOptions.map(({ value }) => ({ ...value }))
@@ -114,7 +114,10 @@ export function RegisterOrderModal({ open, onClose }: Props) {
                     }
                   })}
                   value={selectedProveedor}
-                  onChange={handleProviderSelect}
+                  onChange={e => {
+                    // const values = e as
+                    handleProviderSelect(e as OptionSelect<Proveedor>)
+                  }}
                   placeholder="Select a provider"
                   className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -133,7 +136,10 @@ export function RegisterOrderModal({ open, onClose }: Props) {
                   })}
                   isMulti
                   value={selectedProducts}
-                  onChange={handleProductSelect}
+                  onChange={e => {
+                    // const values = e as
+                    handleProductSelect(e as OptionSelect<Producto>[])
+                  }}
                   className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
                 <div>
