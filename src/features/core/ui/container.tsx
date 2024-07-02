@@ -9,7 +9,7 @@ export function Container({ className, children }: Props) {
   return (
     <div
       className={cn(
-        'p-4 flex flex-col size-full bg-white rounded-md shadow-sm',
+        'p-4 flex flex-col w-full h-full bg-white rounded-md shadow-sm',
         className
       )}
     >

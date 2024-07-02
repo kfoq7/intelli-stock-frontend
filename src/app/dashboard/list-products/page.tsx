@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Container, Select } from '@/features/core'
+import { Container } from '@/features/core'
 import { useProductList } from '@/features/products'
 
 export default function ListProducts() {

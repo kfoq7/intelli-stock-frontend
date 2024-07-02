@@ -57,8 +57,8 @@ export default function Chatbot() {
   }
 
   return (
-    <Container className="flex flex-col bg-gray-100">
-      <div className="flex-none bg-[#214a75] text-white p-4 rounded-md">
+    <Container className="flex flex-col h-[920px] bg-gray-100">
+      <div className="flex-none bg-[#214a75] text-white p-4">
         <h1 className="text-xl">Chat Application</h1>
       </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -78,10 +78,10 @@ export default function Chatbot() {
         ))}
       </div>
       <div className="flex-none p-4 bg-white border-t border-gray-200">
-        <div className="flex">
+        <div className="flex flex-col sm:flex-row">
           <input
             type="text"
-            className="flex-1 border border-gray-300 rounded-lg p-2 mr-2"
+            className="flex-1 border border-gray-300 rounded-lg p-2 mb-2 sm:mb-0 sm:mr-2"
             placeholder="Type a message..."
             value={newMessage}
             onChange={e => setNewMessage(e.target.value)}

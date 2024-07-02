@@ -3,21 +3,14 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { BarChart } from '@mui/x-charts'
-import { toast } from 'react-toastify'
 import { ChartBarIcon, WalletIcon } from '@heroicons/react/20/solid'
 import { Container } from '@/features/core'
 import { RegisterOrderModal } from '@/features/orders'
-import { ProductCard, useProducts } from '@/features/products'
+import { ProductCard } from '@/features/products'
 import { useCutomsers } from '@/features/customers'
-import {
-  inventoryList,
-  pcComponentList,
-  proveedores
-} from '@/features/orders/lib/data'
-import { useSuppliersList } from '@/features/suppliers'
+import { pcComponentList, proveedores } from '@/features/orders/lib/data'
 import { useOrders } from '@/features/orders/hook/use-orders'
 import { getRandomNumber } from '@/lib/utils'
-import { useSession } from 'next-auth/react'
 
 export default function Home() {
   const [producto, setProduct] = useState({
@@ -29,10 +22,6 @@ export default function Home() {
   const [numberOfProducts, setNumberOfProducts] = useState(26)
   const { totalCustomers } = useCutomsers()
   const { orders } = useOrders()
-  // const { productos } = useProducts()
-  const { data: session } = useSession()
-  console.log(session)
-  const { data } = useSuppliersList()
 
   useEffect(() => {
     setTimeout(() => {
@@ -46,7 +35,7 @@ export default function Home() {
         prev => (prev += getRandomNumber({ min: 10, max: 20 }))
       )
     }, 2000)
-  }, [, numberOfProducts])
+  }, [numberOfProducts])
 
   // useEffect(() => {
   //   if (producto.amount <= 4) {
@@ -58,7 +47,7 @@ export default function Home() {
     <>
       <RegisterOrderModal open={isOpen} onClose={() => setIsOpen(false)} />
 
-      <div className="grid grid-cols-[1fr_380px] h-full gap-4">
+      <div className="grid grid-cols-[1fr_380px] gap-4 overflow-y-auto h-[800px] px-2">
         <Container>
           <h3 className="text-4xl font-semibold tracking-tighter">Resumen</h3>
 
@@ -105,11 +94,11 @@ export default function Home() {
             </div>
 
             <section className="mx-auto max-w-7xl">
-              <div className="h-40 flex items-center justify-center gap-4">
+              <div className="h-40 flex items-center justify-center gap-6">
                 {proveedores.slice(0, 3).map(({ id, name }) => (
                   <div
                     key={id}
-                    className="rounded-full text-center size-28 flex items-center justify-center bg-blue-400/55"
+                    className="flex items-center justify-center w-28 h-28 rounded-full bg-blue-400/55 text-center text-white font-semibold"
                   >
                     {name}
                   </div>
@@ -117,7 +106,7 @@ export default function Home() {
 
                 <Link
                   href="/dashboard/suppliers"
-                  className="bg-[#18416e] text-white p-2 rounded-md"
+                  className="flex items-center justify-center h-10 px-4 bg-blue-800 text-white rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Ver todos
                 </Link>
@@ -177,6 +166,7 @@ export default function Home() {
                 { data: [323, 500, 1000, 400, 2100, 240, numberOfProducts] }
               ]}
               colors={['#AFF082', '#F0AC82']}
+              className="h-[200px]"
             />
           </div>
         </Container>

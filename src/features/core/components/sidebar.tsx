@@ -26,9 +26,7 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="bg-gradient-to-t from-[#203040] from-70% to-[#283a4d] h-screen overflow-x-hidden">
-      <Logo />
-
+    <aside className="bg-gradient-to-t from-[#203040] from-70% to-[#283a4d] h-screen overflow-x-hidden ">
       <Profile />
       {/* 
       <div className="grow flex flex-col p-2"> */}
