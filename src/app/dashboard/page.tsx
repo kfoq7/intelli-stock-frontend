@@ -47,7 +47,7 @@ export default function Home() {
     <>
       <RegisterOrderModal open={isOpen} onClose={() => setIsOpen(false)} />
 
-      <div className="grid grid-cols-[1fr_380px] gap-4 overflow-y-auto h-[800px] px-2">
+      <div className="grid grid-cols-[1fr_380px] gap-4 overflow-y-auto h-[900px] px-2">
         <Container>
           <h3 className="text-4xl font-semibold tracking-tighter">Resumen</h3>
 
