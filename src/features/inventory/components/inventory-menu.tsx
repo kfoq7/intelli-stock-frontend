@@ -31,12 +31,12 @@ export function IventoryMenu() {
             >
               Productos
             </Link>
-            <Link
+            {/* <Link
               href="/sales/list-sales"
               className="block rounded-md px-4 py-2 hover:bg-[#18416e]"
             >
               Ventas
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}

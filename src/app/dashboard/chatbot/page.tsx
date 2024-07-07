@@ -57,7 +57,7 @@ export default function Chatbot() {
   }
 
   return (
-    <Container className="flex flex-col h-[920px] bg-gray-100">
+    <Container className="flex flex-col h-screen bg-gray-100">
       <div className="flex-none bg-[#214a75] text-white p-4">
         <h1 className="text-xl">Chat Application</h1>
       </div>

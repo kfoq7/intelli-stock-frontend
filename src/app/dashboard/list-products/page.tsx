@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import { Container } from '@/features/core'
 import { useProductList } from '@/features/products'
+import { ProductEditModal } from '@/features/products/components/product-edit-modal'
 
 export default function ListProducts() {
   const { data: products, isLoading } = useProductList()
   const [searchQuery, setSearchQuery] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
@@ -36,22 +38,34 @@ export default function ListProducts() {
             <p>Loading products...</p>
           ) : (
             filteredProducts?.map(product => (
-              <div
-                key={product.productoId}
-                className="rounded-md bg-white p-4 shadow-md"
-              >
-                <h3 className="text-lg font-semibold">{product.nombre}</h3>
-                <p className="text-gray-500 text-sm">Categoria: PC</p>
-                <p className="mt-2 text-gray-700">
-                  Price: S/. {product.precioUnitario}
-                </p>
-                <p className="mt-2 text-gray-700">
-                  Stock: {product.stockMinimo}
-                </p>
-                <button className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-                  Editar
-                </button>
-              </div>
+              <>
+                <ProductEditModal
+                  key={product.productoId}
+                  producto={product}
+                  isOpen={isOpen}
+                  onClose={() => setIsOpen(!isOpen)}
+                  onSave={() => {}}
+                />
+                <div
+                  key={product.productoId}
+                  className="rounded-md bg-white p-4 shadow-md"
+                >
+                  <h3 className="text-lg font-semibold">{product.nombre}</h3>
+                  <p className="text-gray-500 text-sm">Categoria: PC</p>
+                  <p className="mt-2 text-gray-700">
+                    Price: S/. {product.precioUnitario.toFixed(2)}
+                  </p>
+                  <p className="mt-2 text-gray-700">
+                    Stock: {product.stockMinimo}
+                  </p>
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                  >
+                    Editar
+                  </button>
+                </div>
+              </>
             ))
           )}
         </div>

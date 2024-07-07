@@ -3,10 +3,11 @@
 import { useState } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { OptionSelect, Select } from '@/features/core'
-import { Producto, useProducts } from '@/features/products'
-import { proveedores } from '../lib/data'
-import { InventoryItem, Proveedor } from '../types'
+import { Producto, useProductList } from '@/features/products'
+import { Inventario, Proveedor } from '../types'
 import { useOrders } from '../hook/use-orders'
+import { useSuppliersList } from '@/features/suppliers'
+import { useInventoryDetailMutation } from '@/features/inventory/hooks/use-inventory-detail-mutation'
 
 interface Props {
   open: boolean
@@ -14,18 +15,17 @@ interface Props {
 }
 
 export function RegisterOrderModal({ open, onClose }: Props) {
-  const { products } = useProducts()
-  const [formData, setFormData] = useState<InventoryItem>({
-    id: 0,
-    products: [],
-    date: '',
-    description: '',
-    provider: {
-      id: 0,
-      name: '',
-      location: '',
-      contact: ''
-    }
+  const { data: products } = useProductList()
+  const { data: suppliers } = useSuppliersList()
+  const { mutate } = useInventoryDetailMutation()
+  const [formData, setFormData] = useState<Inventario>({
+    inventarioId: '',
+    fechaEntrada: '',
+    proveedorId: '',
+    cantidadProducto: 0,
+    detalleInventariolista: [],
+    inventarioProductolista: [],
+    proveedor: null
   })
   const [selectedProveedor, setSelectedProveedor] = useState<Proveedor>()
   const [selectedProducts, setSelectedProducts] = useState<Producto[]>([])
@@ -40,21 +40,42 @@ export function RegisterOrderModal({ open, onClose }: Props) {
 
   const handleProviderSelect = (selectedOption: OptionSelect<Proveedor>) => {
     setSelectedProveedor(selectedOption.value)
-    setFormData({ ...formData, provider: selectedOption.value })
+    setFormData({ ...formData, proveedor: selectedOption.value })
   }
 
   const handleProductSelect = (selectedOptions: OptionSelect<Producto>[]) => {
-    console.log({ selectedOptions })
     setSelectedProducts(selectedOptions.map(({ value }) => ({ ...value })))
-    setFormData({
-      ...formData,
-      products: selectedOptions.map(({ value }) => ({ ...value }))
-    })
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    addOrder(formData)
+
+    const response = await fetch(
+      'http://3.16.196.98:5235/api/Inventario/08dc99ff-279c-42a9-86b9-263ae10244a0',
+      {
+        method: 'GET'
+      }
+    )
+    const data = await response.json()
+
+    const precio = selectedProducts.reduce(
+      (total, product) => total + product.precioUnitario,
+      0
+    )
+
+    const detalleInventarios = selectedProducts.map(({ productoId }) => ({
+      productoId,
+      descripcion: '',
+      inventarioId: data.inventarioId,
+      precio,
+      stockIngreso: 10,
+      stockAnterior: 25
+    }))
+
+    for (const detalleInventario of detalleInventarios) {
+      mutate(detalleInventario)
+    }
+
     onClose()
   }
 
@@ -82,22 +103,7 @@ export function RegisterOrderModal({ open, onClose }: Props) {
                   type="date"
                   id="date"
                   name="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Description:
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
+                  value={formData.fechaEntrada}
                   onChange={handleInputChange}
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
@@ -107,15 +113,14 @@ export function RegisterOrderModal({ open, onClose }: Props) {
                   Provider:
                 </label>
                 <Select
-                  options={proveedores.map(proveedor => {
+                  options={suppliers?.map(proveedor => {
                     return {
                       value: proveedor,
-                      label: proveedor.name
+                      label: proveedor.nombre
                     }
                   })}
-                  value={selectedProveedor}
+                  // value={selectedProveedor}
                   onChange={e => {
-                    // const values = e as
                     handleProviderSelect(e as OptionSelect<Proveedor>)
                   }}
                   placeholder="Select a provider"
@@ -127,17 +132,15 @@ export function RegisterOrderModal({ open, onClose }: Props) {
                   Products:
                 </label>
                 <Select
-                  options={products.map(product => {
+                  options={products?.map(product => {
                     return {
-                      id: product.id,
                       value: product,
-                      label: product.name
+                      label: product.nombre
                     }
                   })}
                   isMulti
-                  value={selectedProducts}
+                  // value={selectedProducts}
                   onChange={e => {
-                    // const values = e as
                     handleProductSelect(e as OptionSelect<Producto>[])
                   }}
                   className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -145,8 +148,8 @@ export function RegisterOrderModal({ open, onClose }: Props) {
                 <div>
                   <h2 className="mt-4 font-semibold">Selected Products:</h2>
                   <ul>
-                    {formData.products.map(product => (
-                      <li key={product.id}>{product.name}</li>
+                    {selectedProducts.map(product => (
+                      <li key={product.productoId}>{product.nombre}</li>
                     ))}
                   </ul>
                 </div>

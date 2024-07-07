@@ -32,7 +32,7 @@ export function ItemCard({
         <DisclosureButton className="flex items-center justify-between gap-x-2 outline-none w-full">
           <div className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
             <div className="flex gap-x-8 text-[#204860]">
-              <div className="text-blue-500">{id.split('-').shift()}</div>
+              <div className="text-blue-500">{id.split('-').pop()}</div>
               <div className="">{date.split('T').shift()}</div>
               <div className="">{provider}</div>
               <div>Amazon</div>

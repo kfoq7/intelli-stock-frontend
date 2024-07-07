@@ -1,14 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import { Container } from '@/features/core'
 import RedirectModal from '@/features/core/components/redirect-modal'
 import { useInventoryList } from '@/features/inventory'
-import { ItemCard, OrderList } from '@/features/orders'
-import { useState } from 'react'
+import { ItemCard, OrderList, RegisterOrderModal } from '@/features/orders'
 
 export default function Inventory() {
   const { data, isLoading } = useInventoryList()
   const [isOpen, setIsOpen] = useState(false)
+  const [isOpenRegister, setIsOpenRegister] = useState(false)
 
   function closeModal() {
     setIsOpen(false)
@@ -21,7 +22,10 @@ export default function Inventory() {
   return (
     <>
       <RedirectModal isOpen={isOpen} closeModal={closeModal} />
-
+      <RegisterOrderModal
+        open={isOpenRegister}
+        onClose={() => setIsOpenRegister(!isOpenRegister)}
+      />
       <Container>
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Ordenes</h1>
@@ -33,7 +37,10 @@ export default function Inventory() {
             >
               Exportar excel
             </button>
-            <button className="bg-[#214a75] text-white px-2 py-2.5 rounded-md hover:bg-[#18416e]">
+            <button
+              className="bg-[#214a75] text-white px-2 py-2.5 rounded-md hover:bg-[#18416e]"
+              onClick={() => setIsOpenRegister(!isOpenRegister)}
+            >
               Realizar orden
             </button>
           </div>
@@ -54,7 +61,7 @@ export default function Inventory() {
             <div>Estado</div>
           </div>
 
-          <div className="h-[600px] overflow-y-auto">
+          <div className="h-[350px] overflow-y-auto">
             <OrderList>
               {isLoading ? (
                 <></>
