@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import { Container } from '@/features/core'
-import { useProductList } from '@/features/products'
-import { ProductEditModal } from '@/features/products/components/product-edit-modal'
+import { Producto, useProductList, ProductEditModal } from '@/features/products'
 
 export default function ListProducts() {
   const { data: products, isLoading } = useProductList()
+  const [selectedProduct, setSelectedProduct] = useState<Producto>()
   const [searchQuery, setSearchQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
 
@@ -18,34 +18,38 @@ export default function ListProducts() {
     product.nombre.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  return (
-    <Container>
-      <h1 className="text-4xl font-semibold tracking-tighter mb-2">
-        Punto de Venta
-      </h1>
+  const handleOnSelect = (product: Producto) => {
+    setSelectedProduct(product)
+    setIsOpen(!isOpen)
+  }
 
-      <input
-        type="text"
-        placeholder="Busca por el nombre del producto..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-        className="mb-4 w-full rounded-md border-2 border-gray-300 p-2"
+  return (
+    <>
+      <ProductEditModal
+        producto={selectedProduct}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(!isOpen)}
       />
 
-      <div className="h-[700px] overflow-y-auto p-4">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {isLoading ? (
-            <p>Loading products...</p>
-          ) : (
-            filteredProducts?.map(product => (
-              <>
-                <ProductEditModal
-                  key={product.productoId}
-                  producto={product}
-                  isOpen={isOpen}
-                  onClose={() => setIsOpen(!isOpen)}
-                  onSave={() => {}}
-                />
+      <Container>
+        <h1 className="text-4xl font-semibold tracking-tighter mb-2">
+          Punto de Venta
+        </h1>
+
+        <input
+          type="text"
+          placeholder="Busca por el nombre del producto..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="mb-4 w-full rounded-md border-2 border-gray-300 p-2"
+        />
+
+        <div className="h-[700px] overflow-y-auto p-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {isLoading ? (
+              <p>Loading products...</p>
+            ) : (
+              filteredProducts?.map(product => (
                 <div
                   key={product.productoId}
                   className="rounded-md bg-white p-4 shadow-md"
@@ -59,17 +63,17 @@ export default function ListProducts() {
                     Stock: {product.stockMinimo}
                   </p>
                   <button
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={() => handleOnSelect(product)}
                     className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
                   >
                     Editar
                   </button>
                 </div>
-              </>
-            ))
-          )}
+              ))
+            )}
+          </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </>
   )
 }

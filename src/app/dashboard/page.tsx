@@ -11,6 +11,7 @@ import { useCutomsers } from '@/features/customers'
 import { pcComponentList, proveedores } from '@/features/orders/lib/data'
 import { useOrders } from '@/features/orders/hook/use-orders'
 import { getRandomNumber } from '@/lib/utils'
+import { toast } from 'react-toastify'
 
 export default function Home() {
   const [producto, setProduct] = useState({
@@ -37,11 +38,11 @@ export default function Home() {
     }, 2000)
   }, [numberOfProducts])
 
-  // useEffect(() => {
-  //   if (producto.amount <= 4) {
-  //     toast.warn(`Cantidad ${producto.name} baja.`)
-  //   }
-  // }, [producto])
+  useEffect(() => {
+    if (producto.amount <= 4) {
+      toast.warn(`Cantidad ${producto.name} baja.`)
+    }
+  }, [producto])
 
   return (
     <>

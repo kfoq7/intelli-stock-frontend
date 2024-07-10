@@ -4,10 +4,13 @@ import { useState } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { OptionSelect, Select } from '@/features/core'
 import { Producto, useProductList } from '@/features/products'
-import { Inventario, Proveedor } from '../types'
-import { useOrders } from '../hook/use-orders'
 import { useSuppliersList } from '@/features/suppliers'
-import { useInventoryDetailMutation } from '@/features/inventory/hooks/use-inventory-detail-mutation'
+import {
+  useInventoryMutation,
+  useInventoryDetailMutation
+} from '@/features/inventory'
+import { useOrders } from '../hook/use-orders'
+import { Inventario, Proveedor } from '../types'
 
 interface Props {
   open: boolean
@@ -17,7 +20,8 @@ interface Props {
 export function RegisterOrderModal({ open, onClose }: Props) {
   const { data: products } = useProductList()
   const { data: suppliers } = useSuppliersList()
-  const { mutate } = useInventoryDetailMutation()
+  const { mutate: mutateInventory } = useInventoryMutation()
+  const { mutate: mutateInventoryDetail } = useInventoryDetailMutation()
   const [formData, setFormData] = useState<Inventario>({
     inventarioId: '',
     fechaEntrada: '',
@@ -29,7 +33,8 @@ export function RegisterOrderModal({ open, onClose }: Props) {
   })
   const [selectedProveedor, setSelectedProveedor] = useState<Proveedor>()
   const [selectedProducts, setSelectedProducts] = useState<Producto[]>([])
-  const { addOrder } = useOrders()
+  // const [formData] = useState()
+  // const { addOrder } = useOrders()
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -57,7 +62,7 @@ export function RegisterOrderModal({ open, onClose }: Props) {
       }
     )
     const data = await response.json()
-
+    console.log(selectedProveedor?.id)
     const precio = selectedProducts.reduce(
       (total, product) => total + product.precioUnitario,
       0
@@ -73,7 +78,7 @@ export function RegisterOrderModal({ open, onClose }: Props) {
     }))
 
     for (const detalleInventario of detalleInventarios) {
-      mutate(detalleInventario)
+      mutateInventoryDetail(detalleInventario)
     }
 
     onClose()
@@ -97,13 +102,29 @@ export function RegisterOrderModal({ open, onClose }: Props) {
                   htmlFor="date"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Date:
+                  Fecha:
                 </label>
                 <input
                   type="date"
                   id="date"
-                  name="date"
+                  name="fechaEntrada"
                   value={formData.fechaEntrada}
+                  onChange={handleInputChange}
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="date"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Cantidad:
+                </label>
+                <input
+                  type="text"
+                  id="cantidadProducto"
+                  name="cantidadProducto"
+                  value={formData.cantidadProducto}
                   onChange={handleInputChange}
                   className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />

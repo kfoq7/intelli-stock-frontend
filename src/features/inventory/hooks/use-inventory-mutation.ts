@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
 import { createInventory } from '../service/inventory.service'
+import { Inventario } from '../types'
 
 export function useInventoryMutation() {
-  const { data } = useMutation({
+  const { data, mutate } = useMutation({
     mutationKey: ['inventory'],
-    mutationFn: createInventory
+    mutationFn: (data: Inventario) => createInventory(data)
   })
 
-  return { data }
+  return { data, mutate }
 }

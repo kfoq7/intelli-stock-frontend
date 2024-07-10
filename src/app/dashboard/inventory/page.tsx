@@ -61,7 +61,7 @@ export default function Inventory() {
             <div>Estado</div>
           </div>
 
-          <div className="h-[350px] overflow-y-auto">
+          <div className="h-[700px] overflow-y-auto">
             <OrderList>
               {isLoading ? (
                 <></>

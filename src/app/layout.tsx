@@ -18,9 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppProviders>
-          <div className="grid min-h-screen grid-cols-[280px_1fr]">
-            {children}
-          </div>
+          {/* <div className="grid min-h-screen grid-cols-[280px_1fr]"> */}
+          {children}
+          {/* </div> */}
         </AppProviders>
       </body>
     </html>

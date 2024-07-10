@@ -1,7 +1,8 @@
 export * from './components'
 
-export { useProducts } from './hooks/useProducts'
 export { useProductList } from './hooks/use-product-list'
+export { useProductMutation } from './hooks/use-product-mutation'
+export { useProducts } from './hooks/useProducts'
 
 export { ProductProvider } from './context/products'
 
